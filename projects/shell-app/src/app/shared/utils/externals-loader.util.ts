@@ -1,7 +1,7 @@
 
 declare const require: any;
 
-export function initExternals(production: boolean) {
+export function externalsLoader(production: boolean) {
   (window as any).ng = {} as any;
   (window as any).ng.core = require('@angular/core');
   (window as any).ng.forms = require('@angular/forms');
@@ -53,8 +53,6 @@ export function initExternals(production: boolean) {
   (window as any).ng.flexLayout.flex = require('@angular/flex-layout/flex');
   (window as any).rxjs = require('rxjs');
   (window as any).rxjs.operators = require('rxjs/operators');
-  // (window as any).firebase = require('firebase');
-
 
   if (!production) {
     (window as any).ng.platformBrowserDynamic = require('@angular/platform-browser-dynamic');

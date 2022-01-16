@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { collection, collectionData, Firestore } from '@angular/fire/firestore';
 import { ActivatedRoute, NavigationStart, Route, Router } from '@angular/router';
-import { loadModule } from 'projects/shell-app/src/app/shared/utils/modules-loader.util';
+import { loadModule } from 'projects/shell-app/src/app/shared/utils/load-module.util';
 import { from, Observable } from 'rxjs';
-import { filter, map, takeLast, tap, toArray } from 'rxjs/operators';
+import { filter, map, mergeMap, takeLast, tap, toArray } from 'rxjs/operators';
 
 import { Menu } from '../interfaces/menu';
 
@@ -11,14 +12,19 @@ import { Menu } from '../interfaces/menu';
 })
 export class MenuService {
 
+  currentURL: string = '';
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private firestore: Firestore,
+  ) { }
 
-  currentURL = '';
-
-  set currentRouterURL(currentURL: string) {
-    this.currentURL = currentURL;
-
+  getMenu() {
+    const col = collection(this.firestore, 'menu');
+    return collectionData(col).pipe(
+      mergeMap((e) => this.addMenuToRouterConfig(e as Menu[]))
+    );
   }
 
   addMenuToRouterConfig(menuList: Menu[]): Observable<Route[]> {
@@ -37,9 +43,7 @@ export class MenuService {
         }),
         map(res => res[0])
       );
-
   }
-
 
   builDynamicRoutesFromMicroFrontend(item: Menu): Route {
     return {
@@ -56,29 +60,19 @@ export class MenuService {
     if (this.currentURL) {
       this.router.navigate([`./${this.currentURL}`], { relativeTo: this.activatedRoute, replaceUrl: true });
     } else {
-      this.router.navigate([`./${firstPageToLoad}`], { relativeTo: this.activatedRoute, replaceUrl: true });
+      this.router.navigate([`./${firstPageToLoad.path}`], { relativeTo: this.activatedRoute, replaceUrl: true });
     }
-
   }
-
-
 
   handleRedirectOnReload(router: Router) {
     return router.events
       .pipe(filter((rs): rs is NavigationStart => rs instanceof NavigationStart))
       .pipe(tap(event => {
-
-        if (
-          event.id === 1
-        ) {
-          if (event.url != '/') {
-            this.currentRouterURL = event.url;
-            this.router.navigate(['/'], { relativeTo: this.activatedRoute, replaceUrl: true, skipLocationChange: true });
-
-          }
+        if (event.id === 1 && event.url != '/') {
+          this.currentURL = event.url;
+          this.router.navigate(['/'], { relativeTo: this.activatedRoute });
         }
       }));
   }
-
 
 }

@@ -17,7 +17,7 @@ export function loadModule(umdFileName: string): Promise<any> {
 
     script.onload = () => {
       moduleMap[umdFileName] = true;
-      resolve(window); // window is the global namespace
+      resolve(window);
     };
 
     document.body.append(script);
