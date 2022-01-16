@@ -13,14 +13,12 @@
           <div
             mat-card-avatar
             class="example-header-image"
-            [ngStyle]="{
-              'background-image': 'url(assets/pictures/' + user.picture + ')',
+            [style]="{
+              'background-image': 'url(/assets/pictures/' + user.picture + ')',
               'background-size': 'cover'
             }"
           >
-            <!-- <img [src]="'assets/pictures/' + user.picture" alt="user avatar" /> -->
           </div>
-
           <mat-card-title>{{ user.name | uppercase  }}</mat-card-title>
           <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
         </mat-card-header>

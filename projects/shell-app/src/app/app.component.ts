@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,13 +10,10 @@ export class AppComponent implements OnInit {
   menu = ['home', 'user'];
   activeLink: string = '';
 
-  constructor(private activatedRoute: ActivatedRoute) { }
+  constructor() { }
 
 ngOnInit(): void {
-  this.activatedRoute
 
 }
-
-
 
 }

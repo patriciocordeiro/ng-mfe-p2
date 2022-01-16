@@ -2,21 +2,21 @@ declare const require: any;
 
 const moduleMap: any = {};
 
-export function loadModule(umdFileName: string): Promise<any> {
+export function loadModule(umdFileURL: string): Promise<any> {
   return new Promise<any>((resolve, reject) => {
 
-    if (moduleMap[umdFileName]) {
+    if (moduleMap[umdFileURL]) {
       resolve(window);
       return;
     }
 
     const script = document.createElement('script');
-    script.src = umdFileName;
+    script.src = umdFileURL;
 
     script.onerror = reject;
 
     script.onload = () => {
-      moduleMap[umdFileName] = true;
+      moduleMap[umdFileURL] = true;
       resolve(window);
     };
 
