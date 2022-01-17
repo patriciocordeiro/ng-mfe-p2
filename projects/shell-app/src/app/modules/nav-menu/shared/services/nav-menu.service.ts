@@ -5,12 +5,12 @@ import { loadModule } from 'projects/shell-app/src/app/shared/utils/load-module.
 import { from, Observable } from 'rxjs';
 import { filter, map, mergeMap, takeLast, tap, toArray } from 'rxjs/operators';
 
-import { Menu } from '../interfaces/menu';
+import { NavMenu } from '../interfaces/nav-menu';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MenuService {
+export class NavMenuService {
 
   currentURL: string = '';
 
@@ -23,11 +23,11 @@ export class MenuService {
   getMenu() {
     const col = collection(this.firestore, 'menu');
     return collectionData(col).pipe(
-      mergeMap((e) => this.addMenuToRouterConfig(e as Menu[]))
+      mergeMap((e) => this.addMenuToRouterConfig(e as NavMenu[]))
     );
   }
 
-  addMenuToRouterConfig(menuList: Menu[]): Observable<Route[]> {
+  addMenuToRouterConfig(menuList: NavMenu[]): Observable<Route[]> {
     return from(menuList).pipe(
       map(item => {
         const route: Route = this.builDynamicRoutesFromMicroFrontend(item);
@@ -45,7 +45,7 @@ export class MenuService {
       );
   }
 
-  builDynamicRoutesFromMicroFrontend(item: Menu): Route {
+  builDynamicRoutesFromMicroFrontend(item: NavMenu): Route {
     return {
       path: item.path, loadChildren: () => loadModule(item.mfeURL).then(m => m[item.libName][item.module]),
       data: {
@@ -54,7 +54,7 @@ export class MenuService {
     };
   }
 
-  redirectHandler(menuList: Menu[]) {
+  redirectHandler(menuList: NavMenu[]) {
     const firstPageToLoad = menuList.filter(e => e.isFirstPage)[0];
 
     if (this.currentURL) {

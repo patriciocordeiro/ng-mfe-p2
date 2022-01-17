@@ -1,4 +1,4 @@
-export interface Menu {
+export interface NavMenu {
 
   title: string,        // Title that appear in nav menu button
   libName: string; // Name of this library (as in package.json of the library)

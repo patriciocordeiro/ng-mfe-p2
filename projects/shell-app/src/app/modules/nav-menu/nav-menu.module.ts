@@ -5,13 +5,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 
-import { MenuComponent } from './menu.component';
+import { NavMenuComponent } from './nav-menu.component';
 
 
 
 @NgModule({
   declarations: [
-    MenuComponent
+    NavMenuComponent
   ],
   imports: [
     CommonModule,
@@ -20,6 +20,6 @@ import { MenuComponent } from './menu.component';
     FlexModule,
     MatButtonModule
   ],
-  exports:[MenuComponent]
+  exports:[NavMenuComponent]
 })
-export class MenuModule { }
+export class NavMenuModule { }

@@ -10,7 +10,7 @@ import { getFirestore } from 'firebase/firestore';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MenuModule } from './modules/menu/menu.module';
+import { NavMenuModule } from './modules/nav-menu/nav-menu.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,7 @@ import { MenuModule } from './modules/menu/menu.module';
     MatToolbarModule,
     FlexModule,
     MatButtonModule,
-    MenuModule,
+    NavMenuModule,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore())
   ],
